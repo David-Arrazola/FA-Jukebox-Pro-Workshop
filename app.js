@@ -7,9 +7,13 @@ import morgan from "morgan";
 import tracksRouter from "#api/tracks";
 import playlistsRouter from "#api/playlists";
 import userRouter from "#api/users";
+import getUserFromToken from "#middleware/getUserFromToken";
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+//! "getUserFromToken" will look at the request and see if a token
+//! is attached. If so, then the user is retrieved from the token's payload info.
+app.use(getUserFromToken);
 app.use(morgan("dev"));
 
 app.use("/tracks", tracksRouter);

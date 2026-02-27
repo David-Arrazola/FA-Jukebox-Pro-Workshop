@@ -32,3 +32,14 @@ export async function getUserByEmailAndPass(username, password) {
     console.error(e);
   }
 }
+
+export async function getUserById(id) {
+  try {
+    const sql = `SELECT * FROM users WHERE id = $1`;
+    const user = (await db.query(sql, [id])).rows;
+
+    return user[0];
+  } catch (e) {
+    console.error(e);
+  }
+}

@@ -39,7 +39,9 @@ userRouter.post("/login", async (req, res) => {
     if (!username || !password)
       return res.status(400).send("Body is missing fields");
 
+    //* Returned is the correct user that has the username and password
     const selectedUser = await getUserByEmailAndPass(username, password);
+    //! Sending ID of newly created user as the PAYLOAD for JWT
     const token = await createToken({ id: selectedUser.id });
 
     res.status(200).send(token);
