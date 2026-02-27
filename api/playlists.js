@@ -16,7 +16,8 @@ import requireUser from "#middleware/requireUser";
 router.use(requireUser);
 
 router.get("/", async (req, res) => {
-  const playlists = await getPlaylists();
+  const { id } = req.user;
+  const playlists = await getPlaylists(id);
   res.send(playlists);
 });
 
@@ -37,6 +38,9 @@ router.param("id", async (req, res, next, id) => {
   if (!playlist) return res.status(404).send("Playlist not found.");
 
   req.playlist = playlist;
+  if (req.user.id != req.playlist.owner_id)
+    return res.status(403).send("You do not own this playlist");
+
   next();
 });
 

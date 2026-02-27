@@ -14,12 +14,12 @@ export async function createPlaylist(name, description, ownerId) {
   return playlist;
 }
 
-export async function getPlaylists() {
+export async function getPlaylists(userId) {
   const sql = `
   SELECT *
-  FROM playlists
+  FROM playlists WHERE owner_id = $1
   `;
-  const { rows: playlists } = await db.query(sql);
+  const { rows: playlists } = await db.query(sql, [userId]);
   return playlists;
 }
 
