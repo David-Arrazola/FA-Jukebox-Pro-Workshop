@@ -34,3 +34,20 @@ export async function getPlaylistById(id) {
   } = await db.query(sql, [id]);
   return playlist;
 }
+
+export async function getPlaylistsByTrackId(ownerId, trackId) {
+  try {
+    const sql = `
+        SELECT playlists.* FROM playlists
+        JOIN playlists_tracks ON playlists.id = playlists_tracks.playlist_id
+        WHERE playlists.owner_id = $1 AND playlists_tracks.track_id = $2; 
+        `;
+
+    const playlistsWithTrackId = (await db.query(sql, [ownerId, trackId])).rows;
+    console.log(playlistsWithTrackId); //fix DELETE
+
+    return playlistsWithTrackId;
+  } catch (e) {
+    console.error(e);
+  }
+}
